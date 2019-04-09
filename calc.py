@@ -10,14 +10,11 @@ import datetime
 
 def calc(start_time, end_time, day, hourly):
     hourly = int(hourly)
-    print(start_time)
-    print(end_time)
-    print(day)
-    print(hourly)
+    print(start_time, end_time, day, hourly)
     s_h, s_m = start_time.split(':')
     e_h, e_m = end_time.split(':')
     start = datetime.timedelta(hours=int(s_h), minutes=int(s_m))
-    end   = datetime.timedelta(hours=int(e_h), minutes=int(e_h))
+    end   = datetime.timedelta(hours=int(e_h), minutes=int(e_m))
     total_hours = float(((end-start).total_seconds()) /3600)
     salary = total_hours *hourly
 
@@ -39,7 +36,8 @@ def calc(start_time, end_time, day, hourly):
     salary += overtime_pay + midnight_allowance
 
     # 土日
-    if day =='土曜' or '土' or '日曜' or '日':
-        salary * 1.35
-    
+    if day == '土曜' or day == '土' or day == '日曜' or day =='日':
+        salary = salary * 1.35
+
     return int(salary)
+
