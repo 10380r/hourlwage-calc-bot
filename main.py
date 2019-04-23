@@ -10,6 +10,7 @@ app = Flask(__name__)
 
 SECRET = '85712235d2627403fa8d22de4da0c00a'
 TOKEN  = 'ZBD8AtOv/f1WxsqZIdW2y8c9y/2V5wzWlLlGE3iyju6O37zgxKKndsa4GnFHPk8f9RlrO6KrLapIWkMiNyhq4WichVxnFP2oyQQtS7GRXKyQrMsc06pEwO/16+K2NPmT3iPViVtIUeyQPX9oYCCtpAdB04t89/1O/w1cDnyilFU='
+
 line_bot_api = LineBotApi(TOKEN)
 handler = WebhookHandler(SECRET)
 
@@ -35,6 +36,8 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     try:
+        if event.message.text == '暇':
+            talk(event)
         salary = call_calc(event.message.text)
         reply = 'あんたの今日のお給料はね、\n￥%sだな。\nお疲れ✋' %(salary)
     except:
@@ -56,12 +59,30 @@ def handle_message(event):
 
 
 def call_calc(message):
+    '''
+    calc.pyを呼び出し、計算結果を得る関数
+    '''
     l = message.splitlines()
     day    = l[0]
     hourly = l[1]
     start  = l[2]
     end    = l[3]
     return calc.calc(start, end, day, hourly)
+
+def talk(event):
+    '''
+    talkapiを使用し、apiの返答を返す関数
+    '''
+    A3RTKEY = 'DZZp8uSQIFGqALFBJOnHrftg0Kf8ZJ4s'
+    client = pya3rt.TalkClient(A3RTKEY)
+    while True:
+        if event.message.text == 'うざい':
+            break
+        response = client.talk(event.message.text)
+        reply = ((response['results'])[0])['reply']
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=reply))
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 5000))
