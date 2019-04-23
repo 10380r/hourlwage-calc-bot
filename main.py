@@ -8,8 +8,8 @@ import os
 
 app = Flask(__name__)
 
-secret = LINE_CHANNEL_SECRET
-token  = LINE_CHANNEL_ACCESS_TOKEN
+secret = "LINE_CHANNEL_SECRET"
+token  = "LINE_CHANNEL_ACCESS_TOKEN"
 line_bot_api = LineBotApi(secret)
 print(secret)
 handler = WebhookHandler(token)
