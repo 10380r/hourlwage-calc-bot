@@ -36,8 +36,6 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     try:
-        if event.message.text == '暇':
-            talk(event)
         salary = call_calc(event.message.text)
         reply = 'あんたの今日のお給料はね、\n￥%sだな。\nお疲れ✋' %(salary)
     except:
@@ -69,20 +67,6 @@ def call_calc(message):
     end    = l[3]
     return calc.calc(start, end, day, hourly)
 
-def talk(event):
-    '''
-    talkapiを使用し、apiの返答を返す関数
-    '''
-    A3RTKEY = 'DZZp8uSQIFGqALFBJOnHrftg0Kf8ZJ4s'
-    client = pya3rt.TalkClient(A3RTKEY)
-    while True:
-        if event.message.text == 'うざい':
-            break
-        response = client.talk(event.message.text)
-        reply = ((response['results'])[0])['reply']
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text=reply))
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 5000))
