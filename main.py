@@ -7,13 +7,8 @@ import calc
 
 app = Flask(__name__)
 
-with open('keys.txt', 'r') as f:
-    keys_list = f.readlines()
-    line_token  = keys_list[0].replace('\n','')
-    line_secret = keys_list[1].replace('\n','')
-
-line_bot_api = LineBotApi(line_token)
-handler = WebhookHandler(line_secret)
+line_bot_api = LineBotApi("LINE_CHANNEL_SECRET")
+handler = WebhookHandler("LINE_CHANNEL_ACCESS_TOKEN")
 
 @app.route("/callback", methods=['POST'])
 def callback():
