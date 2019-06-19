@@ -4,16 +4,14 @@ from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage
 import calc
 import os
-import tumblpy
-
+from os.path import join, dirname
+from dotenv import load_dotenv
 
 app = Flask(__name__)
+load_dotenv(join(dirname(__file__), '.env'))
 
-SECRET = '85712235d2627403fa8d22de4da0c00a'
-TOKEN  = 'ZBD8AtOv/f1WxsqZIdW2y8c9y/2V5wzWlLlGE3iyju6O37zgxKKndsa4GnFHPk8f9RlrO6KrLapIWkMiNyhq4WichVxnFP2oyQQtS7GRXKyQrMsc06pEwO/16+K2NPmT3iPViVtIUeyQPX9oYCCtpAdB04t89/1O/w1cDnyilFU='
-
-line_bot_api = LineBotApi(TOKEN)
-handler = WebhookHandler(SECRET)
+line_bot_api = LineBotApi(os.environ.get('LINE_TOKEN'))
+handler = WebhookHandler(os.environ.get('LINE_SECRET'))
 
 @app.route("/callback", methods=['POST'])
 def callback():
